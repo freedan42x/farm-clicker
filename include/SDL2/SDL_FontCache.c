@@ -5,7 +5,7 @@ by Jonathan Dearborn
 See SDL_FontCache.h for license info.
 */
 
-#include "SDL_FontCache.hpp"
+#include <SDL2/SDL_FontCache.h>
 
 #include <stdio.h>
 #include <stdlib.h>
