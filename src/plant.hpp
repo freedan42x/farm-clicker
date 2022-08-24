@@ -32,6 +32,5 @@ struct Plant
 
   void update_fields(PlantType last_plant_unlocked);
   void on_click(Game *game);
-  //void on_click(double *money, PlantType *last_plant_unlocked, CurrencyType *last_currency_unlocked);
   void render(bool hovered);
 };
