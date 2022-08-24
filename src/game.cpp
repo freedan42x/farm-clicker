@@ -5,22 +5,14 @@
 
 Game::Game(RenderState *rstate) : money_field(TextField(rstate))
 {
-  config = &rstate->config;
+  config = rstate->config;
 
   SDL_GetMouseState(&cursor_x, &cursor_y);
 
-  for (auto i = 0; i < CURRENCY_COUNT; i++) {
-    money[i] = 0.0;
-    income[i] = 0.0;
-  }
-  last_currency_unlocked = CURRENCY_RABBIT;
-  
   for (auto i = 0; i < PLANT_COUNT; i++) {
     plants[i] = new Plant(rstate, (PlantType) i);
-    if (i == 0) plants[i]->level = 1;
   }
   cur_plant_hovered = (PlantType) -1;
-  last_plant_unlocked = PLANT_CARROT;
 }
 
 void Game::update_fields()

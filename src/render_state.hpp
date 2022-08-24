@@ -1,17 +1,16 @@
 #pragma once
 
 #include <SDL2/SDL.h>
-#include "SDL_FontCache.hpp"
+#include <SDL2/SDL_FontCache.h>
 #include <vector>
 #include "interact.hpp"
 #include "image.hpp"
 #include "config.hpp"
 #include "plant_info.hpp"
-#include "lang.hpp"
 
 struct RenderState
 {
-  Config config;
+  Config *config;
 
   SDL_Window *window;
   SDL_Renderer *renderer;
@@ -21,8 +20,6 @@ struct RenderState
 
   FC_Font *font;
   FC_Font *font_outline;
-
-  Lang lang;
   
   Image *plant_imgs[PLANT_COUNT];
   
@@ -33,9 +30,8 @@ struct RenderState
   
   std::vector<Interaction> interactions;
 
-  RenderState();
+  RenderState(Config *config);
   ~RenderState();
 
   void draw_text(int x, int y, const char *msg);
-  void render_hover_info();
 };

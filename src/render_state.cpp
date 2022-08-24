@@ -3,21 +3,18 @@
 #include "util.hpp"
 #include "config.hpp"
 
-RenderState::RenderState()
+RenderState::RenderState(Config *config) : config(config)
 {
   sec(SDL_Init(SDL_INIT_VIDEO));
   sec(IMG_Init(IMG_INIT_PNG));
 
-  config = Config();
-  config.calculate();
- 
   window = sec(SDL_CreateWindow(
 		      "Title",
 		      SDL_WINDOWPOS_UNDEFINED,
 		      SDL_WINDOWPOS_UNDEFINED,
-		      config.width,
-		      config.height,
-		      config.fullscreen ? SDL_WINDOW_FULLSCREEN : 0));
+		      config->width,
+		      config->height,
+		      config->fullscreen ? SDL_WINDOW_FULLSCREEN : 0));
 
   renderer = sec(SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED));
 
@@ -26,19 +23,17 @@ RenderState::RenderState()
   default_cursor = sec(SDL_GetCursor());
   custom_cursor = sec(SDL_CreateColorCursor(cursor_surface, 0, 0));
   SDL_FreeSurface(cursor_surface);
-  SDL_SetCursor(custom_cursor);
+
+  if (config->show_custom_cursor) SDL_SetCursor(custom_cursor);
 
   font = FC_CreateFont();
   font_outline = FC_CreateFont();
-  FC_LoadFont(font, renderer, "assets/fonts/Retroville NC.ttf", config.text_size_pt, config.text_color, TTF_STYLE_NORMAL);
-  FC_LoadFont(font_outline, renderer, "assets/fonts/Retroville NC.ttf", config.text_size_pt, config.outline_color, TTF_STYLE_OUTLINE);
+  FC_LoadFont(font, renderer, "assets/fonts/Retroville NC.ttf", config->text_size_pt, config->text_color, TTF_STYLE_NORMAL);
+  FC_LoadFont(font_outline, renderer, "assets/fonts/Retroville NC.ttf", config->text_size_pt, config->outline_color, TTF_STYLE_OUTLINE);
   FC_SetSpacing(font_outline, -2);
 
-  lang = LANG_RU;
-  
   for (auto i = 0; i < PLANT_COUNT; i++) {
     plant_imgs[i] = new Image(renderer);
-    plant_imgs[i]->load(i == PLANT_CARROT ? plant_paths[i] : plant_white_paths[i]);
   }
 
   rabbit_img = new Image(renderer);

@@ -8,27 +8,27 @@
 Plant::Plant(RenderState *rstate, PlantType type) : rstate(rstate),
 						    type(type),
 						    currency_type(plant_info[type].type),
-						    price(plant_info[type].initial_price),
-						    level(0),
-						    reward(0.0),
 						    income(0.0),
-						    clicks(0.0),
 						    price_field(TextField(rstate)),
 						    desc_field(TextField(rstate))
 {
   assert(rstate);
 
-  x = rstate->config.plants_start_x + (rstate->config.plant_size + rstate->config.plant_hgap) * (type % rstate->config.plants_per_screen % rstate->config.rows);
-  y = rstate->config.plants_start_y + (rstate->config.plant_size + rstate->config.plant_vgap) * (type % rstate->config.plants_per_screen / rstate->config.rows);
-  w = rstate->config.plant_size;
-  h = rstate->config.plant_size;
+  x = rstate->config->plants_start_x +
+    (rstate->config->plant_size + rstate->config->plant_hgap) *
+    (type % rstate->config->plants_per_screen % rstate->config->rows);
+  y = rstate->config->plants_start_y +
+    (rstate->config->plant_size + rstate->config->plant_vgap) *
+    (type % rstate->config->plants_per_screen / rstate->config->rows);
+  w = rstate->config->plant_size;
+  h = rstate->config->plant_size;
   
   Interaction interaction;
   interaction.type = InteractionType::Plant;
   interaction.x = x;
   interaction.y = y;
-  interaction.w = rstate->config.plant_size;
-  interaction.h = rstate->config.plant_size;
+  interaction.w = rstate->config->plant_size;
+  interaction.h = rstate->config->plant_size;
   interaction.plant_type = type;
   rstate->interactions.push_back(interaction);
 }
@@ -60,7 +60,7 @@ void Plant::on_click(Game *game)
 
   double *money = &game->money[currency_type];
 
-  anim_state = AnimState(&rstate->config, 1.15, 1.5);
+  anim_state = AnimState(rstate->config, 1.15, 1.5);
 
   if (type == PLANT_CARROT) {
     *money += reward;
@@ -114,6 +114,6 @@ void Plant::render(bool hovered)
   }
 
   if (hovered) {
-    desc_field.render(0, rstate->config.height - 100, rstate->config.width);
+    desc_field.render(0, rstate->config->height - 100, rstate->config->width);
   }
 }

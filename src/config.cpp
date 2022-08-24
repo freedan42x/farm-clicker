@@ -2,11 +2,6 @@
 
 Config::Config()
 {
-  width = 1366;
-  height = 768;
-  fullscreen = true;
-  fps = 60;
-
   plant_size = 256;
   rows = 4;
   cols = 2;

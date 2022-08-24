@@ -1,7 +1,7 @@
 #include "plant.hpp"
 #include "util.hpp"
 
-void set_plant_desc_ru(Plant *p)
+void set_plant_desc_RU(Plant *p)
 { 
   TextField *f = &p->desc_field;
 
@@ -79,7 +79,7 @@ void set_plant_desc_ru(Plant *p)
   }
 }
 
-void set_plant_desc_en(Plant *p)
+void set_plant_desc_EN(Plant *p)
 { 
   TextField *f = &p->desc_field;
 
@@ -161,12 +161,12 @@ void set_plant_desc_en(Plant *p)
 
 void set_plant_desc(Plant *plant)
 {
-  switch (plant->rstate->lang) {
-  case LANG_EN:
-    set_plant_desc_en(plant);
+  switch (plant->rstate->config->language) {
+  case LANGUAGE_EN:
+    set_plant_desc_EN(plant);
     break;
-  case LANG_RU:
-    set_plant_desc_ru(plant);
+  case LANGUAGE_RU:
+    set_plant_desc_RU(plant);
     break;
   }
 }

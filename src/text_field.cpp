@@ -14,10 +14,10 @@ void FieldComponent::render(RenderState *rstate, const int x, const int y)
     rstate->draw_text(x, y, text.c_str());
     break;
   case ComponentType::Currency:
-    currency2image(rstate, currency_type)->render(x, y, rstate->config.text_size_px, rstate->config.text_size_px);
+    currency2image(rstate, currency_type)->render(x, y, rstate->config->text_size_px, rstate->config->text_size_px);
     break;
   case ComponentType::Plant:
-    rstate->plant_imgs[plant_type]->render(x, y, rstate->config.text_size_px, rstate->config.text_size_px);
+    rstate->plant_imgs[plant_type]->render(x, y, rstate->config->text_size_px, rstate->config->text_size_px);
     break;
   case ComponentType::Padding:
     // Literally do nothing, it's just a padding bro!
@@ -72,7 +72,7 @@ void TextField::add_text(const char *fmt, ...)
 void TextField::add_currency(CurrencyType type, bool ignore_width)
 {
   auto component = FieldComponent(type);
-  component.width = rstate->config.text_size_px;
+  component.width = rstate->config->text_size_px;
   lines[lines.size() - 1].components.push_back(component);
   if (!ignore_width) lines[lines.size() - 1].width += component.width;
 }
@@ -80,7 +80,7 @@ void TextField::add_currency(CurrencyType type, bool ignore_width)
 void TextField::add_plant(PlantType type)
 {
   auto component = FieldComponent(type);
-  component.width = rstate->config.text_size_px;
+  component.width = rstate->config->text_size_px;
   lines[lines.size() - 1].components.push_back(component);
   lines[lines.size() - 1].width += component.width;
 }
@@ -101,7 +101,7 @@ void TextField::render(const int x, const int y)
 {
   int line_count = 0;
   for (auto &line : lines) {
-    line.render(rstate, x, y + line_count * (rstate->config.text_size_pt + rstate->config.text_line_spacing));
+    line.render(rstate, x, y + line_count * (rstate->config->text_size_pt + rstate->config->text_line_spacing));
     line_count++;
   }
 }
@@ -110,7 +110,7 @@ void TextField::render(const int x, const int y, const int align_w)
 {
   int line_count = 0;
   for (auto &line : lines) {
-    line.render(rstate, x + (align_w - line.width) / 2, y + line_count * (rstate->config.text_size_pt + rstate->config.text_line_spacing));
+    line.render(rstate, x + (align_w - line.width) / 2, y + line_count * (rstate->config->text_size_pt + rstate->config->text_line_spacing));
     line_count++;
   }
 }
