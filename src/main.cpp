@@ -62,6 +62,7 @@ int main()
 	    switch (inter.type) {
 	    case InteractionType::Plant: {
 	      Plant *plant = game.plants[inter.plant_type];
+	      plant->anim_state.shrink();
 	      plant->on_click(&game);
 	      game.calculate_rewards();
 	      game.update_fields();
@@ -74,6 +75,7 @@ int main()
 	}
       } break;
       case SDL_MOUSEMOTION: {
+	PlantType prev_plant_hovered = game.cur_plant_hovered;
 	game.cur_plant_hovered = (PlantType) -1;
 
 	SDL_GetMouseState(&game.cursor_x, &game.cursor_y);
@@ -82,10 +84,15 @@ int main()
 	    switch (inter.type) {
 	    case InteractionType::Plant: {
 	      game.cur_plant_hovered = inter.plant_type;
+	      game.plants[inter.plant_type]->anim_state.make_expand(1.08, 1.5);
 	    } break;
 	    }
 	    break;
 	  }
+	}
+
+	if (prev_plant_hovered != (PlantType) -1 && prev_plant_hovered != game.cur_plant_hovered) {
+	  game.plants[prev_plant_hovered]->anim_state.make_shrink(1.5);
 	}
       } break;
       default:

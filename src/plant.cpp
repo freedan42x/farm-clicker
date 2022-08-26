@@ -6,6 +6,7 @@
 #include "plant_desc.hpp"
 
 Plant::Plant(RenderState *rstate, PlantType type) : rstate(rstate),
+						    anim_state(rstate->config),
 						    type(type),
 						    currency_type(plant_info[type].type),
 						    income(0.0),
@@ -59,8 +60,6 @@ void Plant::on_click(Game *game)
   assert(game);
 
   double *money = &game->money[currency_type];
-
-  anim_state = AnimState(rstate->config, 1.15, 1.5);
 
   if (type == PLANT_CARROT) {
     *money += reward;

@@ -12,12 +12,11 @@ struct Game;
 struct Plant
 {
   RenderState *rstate;
-
-  int x, y, w, h;
-  
-  PlantType type;
   AnimState anim_state;
 
+  int x, y, w, h;
+
+  PlantType type;
   CurrencyType currency_type;
   uint64_t price;
   uint64_t level;

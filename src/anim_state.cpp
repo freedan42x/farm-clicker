@@ -1,37 +1,55 @@
 #include "anim_state.hpp"
 
 #include <algorithm>
-#include <cassert>
 #include "config.hpp"
 
-AnimState::AnimState()
-{
-  offset = 0;
-  offset_step = 0;
-}
-
-AnimState::AnimState(Config *config, double scale, double dur)
-{
-  offset = config->plant_size * (scale - 1);
-  offset_step = (config->plant_size + offset) / (config->fps * dur);
-}
+AnimState::AnimState(Config *config) : config(config), type(AnimType::None) { }
 
 void AnimState::apply(int *x, int *y, int *w, int *h)
 {
-  assert(x);
-  assert(y);
-  assert(w);
-  assert(h);
+  if (type == AnimType::None) return;
 
   *x -= offset;
   *y -= offset;
-  *w += offset;
-  *h += offset;
+  *w += 2 * offset;
+  *h += 2 * offset;    
 }
 
 void AnimState::step()
 {
-  if (offset > 0) {
-    offset = std::max(0.0, offset - offset_step);
+  switch (type) {
+  case AnimType::None:
+    break;
+  case AnimType::Expand:
+    offset = std::min(offset_max, offset + offset_step);
+    break;
+  case AnimType::Shrink:
+    offset -= offset_step;
+    if (offset <= 0) {
+      offset = 0;
+      type = AnimType::None;
+    }
+    break;
   }
+}
+
+void AnimState::make_expand(double scale, double duration)
+{
+  if (type == AnimType::Expand) return;
+  
+  type = AnimType::Expand;
+  offset = 0;
+  offset_max = config->plant_size * scale - config->plant_size;
+  offset_step = (config->plant_size + offset_max) / (config->fps * duration);
+}
+
+void AnimState::make_shrink(double duration)
+{
+  type = AnimType::Shrink;
+  offset_step = (config->plant_size + offset_max) / (config->fps * duration);
+}
+
+void AnimState::shrink()
+{
+  offset = -offset_step;
 }
