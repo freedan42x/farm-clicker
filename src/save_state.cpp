@@ -84,7 +84,6 @@ Plant_SaveState::Plant_SaveState(PlantType type)
 {
   price = plant_info[type].initial_price;
   level = type == PLANT_CARROT;
-  reward = 0.0;
   clicks = 0.0;
 }
 
@@ -92,7 +91,6 @@ Plant_SaveState::Plant_SaveState(Plant &plant)
 {
   price = plant.price;
   level = plant.level;
-  reward = plant.reward;
   clicks = plant.clicks;
 }
 
@@ -100,7 +98,6 @@ void Plant_SaveState::dump(Plant *plant)
 {
   plant->price = price;
   plant->level = level;
-  plant->reward = reward;
   plant->clicks = clicks;
 }
 
@@ -111,9 +108,6 @@ void Plant_SaveState::write(Writer<StringBuffer> &w)
 
   w.Key("level");
   w.Uint64(level);
-
-  w.Key("reward");
-  w.Double(reward);
 
   w.Key("clicks");
   w.Double(clicks);
@@ -129,10 +123,6 @@ void Plant_SaveState::read(Value &d)
     level = d["level"].GetUint64();
   }
 
-  if (d.HasMember("reward")) {
-    reward = d["reward"].GetDouble();
-  }
-
   if (d.HasMember("clicks")) {
     clicks = d["clicks"].GetDouble();
   }
@@ -141,7 +131,7 @@ void Plant_SaveState::read(Value &d)
 Game_SaveState::Game_SaveState()
 {
   for (auto i = 0; i < CURRENCY_COUNT; i++) {
-    money[i] = 0.0;
+    money[i] = 1000000.0;
   }
   last_currency_unlocked = CURRENCY_RABBIT;
 

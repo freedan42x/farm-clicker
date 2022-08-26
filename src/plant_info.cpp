@@ -33,15 +33,13 @@ const PlantInfo plant_info[PLANT_COUNT] = {
   [PLANT_STARFRUIT] = {CURRENCY_RABBIT, 0, 0}
 };
 
-// Returns 'Clicks required' subtraction amount
+// Returns 'Clicks required'
 double lettuce_table(int level)
 {
-  if (level < 45) return 10 - level / 5;
-  if (level < 55) return 1.5;
-  if (level < 65) return 1;
-  if (level < 75) return 0.5;
-  if (level <= 100) return 0.2;
-
-  fprintf(stderr, "Unexpected level in lettuce_table! Got %d", level);
-  exit(1);
+  double k = level - 1;
+  return (int) (300.0
+		- k
+		- pow((int) (k / 1.75), 1.1)
+		- pow((int) (k / 2.5), 1.1)
+		- pow((int) (k / 3), 1.15));
 }

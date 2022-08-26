@@ -53,6 +53,7 @@ void Game::calculate_rewards()
   plants[PLANT_RADISH]->reward = apply_percent(0.1, plants[PLANT_WATERMELON]->reward);
   plants[PLANT_RADISH]->income = plants[PLANT_RADISH]->level * plants[PLANT_RADISH]->reward;
 
+  plants[PLANT_LETTUCE]->reward = plants[PLANT_LETTUCE]->level > 0 ? lettuce_table(plants[PLANT_LETTUCE]->level) : 0;
   plants[PLANT_DRAGONFRUIT]->reward = plants[PLANT_LETTUCE]->level > 0 ? 1.0 / plants[PLANT_LETTUCE]->reward : 0;
   plants[PLANT_DRAGONFRUIT]->income = plants[PLANT_DRAGONFRUIT]->level * plants[PLANT_DRAGONFRUIT]->reward;
 

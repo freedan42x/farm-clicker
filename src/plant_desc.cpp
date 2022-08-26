@@ -39,7 +39,7 @@ void set_plant_desc_RU(Plant *p)
     } else if (p->level == 100) {
       f->add_text("(Уровень 100)");
     } else {
-      f->add_text("(Уровень %d, Потом %s)", p->level, format_money(p->reward - lettuce_table(p->level)).c_str());
+      f->add_text("(Уровень %d, Потом %s)", p->level, format_money(lettuce_table(p->level + 1)).c_str());
     }
 
     break;
@@ -117,7 +117,7 @@ void set_plant_desc_EN(Plant *p)
     } else if (p->level == 100) {
       f->add_text("(LVL 100)");
     } else {
-      f->add_text("(LVL %d, Next %s)", p->level, format_money(p->reward - lettuce_table(p->level)).c_str());
+      f->add_text("(LVL %d, Next %s)", p->level, format_money(lettuce_table(p->level + 1)).c_str());
     }
 
     break;

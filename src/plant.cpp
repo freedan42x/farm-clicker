@@ -77,21 +77,16 @@ void Plant::on_click(Game *game)
   }
 
   if (type == PLANT_LETTUCE && level == 100) return;
-  
+
   if (*money >= price && game->last_plant_unlocked + 1 >= type) {
     if (level == 0) {
       game->last_plant_unlocked = type;
       rstate->plant_imgs[type]->load(plant_paths[type]);
 
       if (type == PLANT_LETTUCE) {
-	reward = 300.0;
 	game->last_currency_unlocked = CURRENCY_BEAR;
       }
     }
-
-    if (level > 0 && type == PLANT_LETTUCE) {
-      reward -= lettuce_table(level);
-    } 
 
     *money -= price;
     price += plant_info[type].price_growth;

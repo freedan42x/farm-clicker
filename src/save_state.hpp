@@ -32,7 +32,6 @@ struct Plant_SaveState
 {
   uint64_t price;
   uint64_t level;
-  double reward;
   double clicks;
 
   Plant_SaveState(PlantType type);

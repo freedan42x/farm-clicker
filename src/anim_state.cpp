@@ -12,7 +12,7 @@ void AnimState::apply(int *x, int *y, int *w, int *h)
   *x -= offset;
   *y -= offset;
   *w += 2 * offset;
-  *h += 2 * offset;    
+  *h += 2 * offset;
 }
 
 void AnimState::step()
