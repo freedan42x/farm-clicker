@@ -3,7 +3,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <string>
-#include "currency.hpp"
 
 // Generic Error Checker
 template <typename T>
