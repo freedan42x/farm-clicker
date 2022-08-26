@@ -30,8 +30,8 @@ struct Config_SaveState
 
 struct Plant_SaveState
 {
-  ull_t price;
-  ull_t level;
+  uint64_t price;
+  uint64_t level;
   double reward;
   double clicks;
 

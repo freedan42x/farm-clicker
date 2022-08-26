@@ -22,7 +22,7 @@ void Game::update_fields()
     if (i != 0) money_field.add_padding(15);
 
     if (money[i] > 100) {
-      money_field.add_text("%llu", (ull_t) money[i]);
+      money_field.add_text("%lu", (uint64_t) money[i]);
     } else {
       money_field.add_text("%s", format_money(money[i]).c_str());
     }

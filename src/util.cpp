@@ -17,9 +17,9 @@ std::string format_money(double x, unsigned short prec)
   static const double eps = 0.001;
   const double rx = round(x);
   if (abs(rx - x) <= eps) {
-    size_t len = snprintf(nullptr, 0, "%llu", (ull_t) rx);
+    size_t len = snprintf(nullptr, 0, "%lu", (uint64_t) rx);
     result.resize(len);
-    snprintf(&result[0], len + 1, "%llu", (ull_t) rx);
+    snprintf(&result[0], len + 1, "%lu", (uint64_t) rx);
   } else {
     size_t len = snprintf(nullptr, 0, "%.*f", prec, x);
     result.resize(len);

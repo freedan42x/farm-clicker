@@ -19,8 +19,8 @@ enum PlantType
 struct PlantInfo
 {
   CurrencyType type;
-  ull_t initial_price;
-  ull_t price_growth;
+  uint64_t initial_price;
+  uint64_t price_growth;
 };
 
 extern const std::string plant_paths[PLANT_COUNT];

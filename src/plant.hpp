@@ -19,8 +19,8 @@ struct Plant
   AnimState anim_state;
 
   CurrencyType currency_type;
-  ull_t price;
-  ull_t level;
+  uint64_t price;
+  uint64_t level;
   double reward;
   double income; // per second
   double clicks;

@@ -4,8 +4,6 @@
 
 struct RenderState; // Forward declare this motherflipper
 
-typedef unsigned long long ull_t;
-
 enum CurrencyType
 {
   CURRENCY_RABBIT,
