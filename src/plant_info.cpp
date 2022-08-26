@@ -33,6 +33,11 @@ const PlantInfo plant_info[PLANT_COUNT] = {
   [PLANT_STARFRUIT] = {CURRENCY_RABBIT, 0, 0}
 };
 
+uint64_t plant_price_table(PlantType type, int level)
+{
+  return plant_info[type].initial_price + level * plant_info[type].price_growth;
+}
+
 // Returns 'Clicks required'
 double lettuce_table(int level)
 {

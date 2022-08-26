@@ -27,4 +27,5 @@ extern const std::string plant_paths[PLANT_COUNT];
 extern const std::string plant_white_paths[PLANT_COUNT];
 extern const PlantInfo plant_info[PLANT_COUNT];
 
+uint64_t plant_price_table(PlantType type, int level);
 double lettuce_table(int level);

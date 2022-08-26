@@ -9,6 +9,7 @@ Plant::Plant(RenderState *rstate, PlantType type) : rstate(rstate),
 						    anim_state(rstate->config),
 						    type(type),
 						    currency_type(plant_info[type].type),
+						    price(plant_price_table(type, 0)),
 						    income(0.0),
 						    price_field(TextField(rstate)),
 						    desc_field(TextField(rstate))
@@ -89,8 +90,8 @@ void Plant::on_click(Game *game)
     }
 
     *money -= price;
-    price += plant_info[type].price_growth;
     level++;
+    price = plant_price_table(type, level);
   }
 }
 

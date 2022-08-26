@@ -82,30 +82,24 @@ void Config_SaveState::read(Value &d)
 
 Plant_SaveState::Plant_SaveState(PlantType type)
 {
-  price = plant_info[type].initial_price;
   level = type == PLANT_CARROT;
   clicks = 0.0;
 }
 
 Plant_SaveState::Plant_SaveState(Plant &plant)
 {
-  price = plant.price;
   level = plant.level;
   clicks = plant.clicks;
 }
 
 void Plant_SaveState::dump(Plant *plant)
 {
-  plant->price = price;
   plant->level = level;
   plant->clicks = clicks;
 }
 
 void Plant_SaveState::write(Writer<StringBuffer> &w)
 {
-  w.Key("price");
-  w.Uint64(price);
-
   w.Key("level");
   w.Uint64(level);
 
@@ -115,10 +109,6 @@ void Plant_SaveState::write(Writer<StringBuffer> &w)
 
 void Plant_SaveState::read(Value &d)
 {
-  if (d.HasMember("price")) {
-    price = d["price"].GetUint64();
-  }
-  
   if (d.HasMember("level")) {
     level = d["level"].GetUint64();
   }
