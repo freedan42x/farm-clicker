@@ -10,7 +10,8 @@ Plant::Plant(RenderState *rstate, PlantType type) : rstate(rstate),
 						    type(type),
 						    currency_type(plant_info[type].type),
 						    price(plant_price_table(type, 0)),
-						    income(0.0),
+						    level(type == PLANT_CARROT),
+						    clicks(0.0),
 						    price_field(TextField(rstate)),
 						    desc_field(TextField(rstate))
 {
@@ -110,5 +111,26 @@ void Plant::render(bool hovered)
 
   if (hovered) {
     desc_field.render(0, rstate->config->height - 100, rstate->config->width);
+  }
+}
+
+void Plant::write(Writer<StringBuffer> &w)
+{
+  w.Key("level");
+  w.Uint64(level);
+
+  w.Key("clicks");
+  w.Double(clicks);
+}
+
+void Plant::read(Value &d)
+{
+  if (d.HasMember("level")) {
+    level = d["level"].GetUint64();
+    price = plant_price_table(type, level);
+  }
+
+  if (d.HasMember("clicks")) {
+    clicks = d["clicks"].GetDouble();
   }
 }

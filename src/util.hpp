@@ -3,6 +3,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <string>
+#include <rapidjson/document.h>
 
 // Generic Error Checker
 template <typename T>
@@ -35,3 +36,8 @@ void isec(int result);
 std::string format_money(double money, unsigned short prec = 2);
 
 double apply_percent(double x, unsigned short ps);
+
+struct Game;
+
+bool read_json(std::string path, rapidjson::Document *d);
+void write_json(std::string path, Game &game);

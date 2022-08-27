@@ -2,6 +2,11 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_FontCache.h>
+#include <rapidjson/writer.h>
+#include <rapidjson/document.h>
+
+using namespace rapidjson;
+
 #include "language.hpp"
 
 struct Config
@@ -28,4 +33,7 @@ struct Config
 
   Config();
   void calculate();
+
+  void write(Writer<StringBuffer> &w);
+  void read(Value &d);
 };

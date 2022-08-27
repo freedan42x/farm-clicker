@@ -8,35 +8,38 @@
 #include "plant.hpp"
 #include "text_field.hpp"
 #include "game.hpp"
-#include "save_state.hpp"
-#include <rapidjson/stringbuffer.h>
-#include <rapidjson/writer.h>
-#include <rapidjson/document.h>
-#include <rapidjson/pointer.h>
 
 int main()
 {
   std::string save_path = "saves/save1.json";
-
-  SaveState save_state;
-  save_state.read(save_path);
+  
+  Document d;
+  bool success = read_json(save_path, &d);
 
   Config config;
-  save_state.config.dump(&config);
+  
+  if (success && d.HasMember("config")) {
+    config.read(d["config"]);
+  }
+  config.calculate();
 
   RenderState rstate(&config);
-  rstate.config->calculate();
-
   Game game(&rstate);
-  save_state.game.dump(&game);
-
-  for (auto i = 0; i < PLANT_COUNT; i++) {
-    rstate.plant_imgs[i]->load(game.plants[i]->level > 0 ? plant_paths[i] : plant_white_paths[i]);
+  
+  if (success && d.HasMember("game")) {
+    game.read(d["game"]);
   }
 
   game.calculate_rewards();
   game.update_fields();
   game.update_plant_fields();
+
+  for (auto i = 0; i < PLANT_COUNT; i++) {
+    rstate.plant_imgs[i]->load(game.plants[i]->level > 0 ? plant_paths[i] : plant_white_paths[i]);
+  }
+  
+  // printf("Time away: %lu\n", game.awaytime);
+  // printf("Playtime: %lu\n", game.playtime);
 
   Image bg(rstate.renderer);
   bg.load("assets/bg/0.png");
@@ -50,9 +53,7 @@ int main()
     while (SDL_PollEvent(&event)) {
       switch (event.type) {
       case SDL_QUIT: {
-	save_state = SaveState(game);
-	save_state.write(save_path);
-
+	write_json(save_path, game);
         quit = true;
       } break;
       case SDL_MOUSEBUTTONDOWN: {

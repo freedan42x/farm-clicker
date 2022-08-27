@@ -32,4 +32,7 @@ struct Plant
   void update_fields(PlantType last_plant_unlocked);
   void on_click(Game *game);
   void render(bool hovered);
+
+  void write(Writer<StringBuffer> &w);
+  void read(Value &d);
 };
