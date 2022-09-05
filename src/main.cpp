@@ -8,6 +8,7 @@
 #include "plant.hpp"
 #include "text_field.hpp"
 #include "game.hpp"
+#include "ui.hpp"
 
 int main()
 {
@@ -41,6 +42,8 @@ int main()
   // printf("Time away: %lu\n", game.awaytime);
   // printf("Playtime: %lu\n", game.playtime);
 
+  Ui ui;
+  
   Image bg(rstate.renderer);
   bg.load("assets/bg/0.png");
 
@@ -49,6 +52,8 @@ int main()
   while (!quit) {
     Uint64 start = SDL_GetPerformanceCounter();
 
+    ui.clicked = false;
+    
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
       switch (event.type) {
@@ -57,44 +62,11 @@ int main()
         quit = true;
       } break;
       case SDL_MOUSEBUTTONDOWN: {
-	SDL_GetMouseState(&game.cursor_x, &game.cursor_y);
-	for (auto &inter : rstate.interactions) {
-	  if (inter.check(game.cursor_x, game.cursor_y)) {
-	    switch (inter.type) {
-	    case InteractionType::Plant: {
-	      Plant *plant = game.plants[inter.plant_type];
-	      plant->anim_state.shrink();
-	      plant->on_click(&game);
-	      game.calculate_rewards();
-	      game.update_fields();
-	      game.update_plant_fields();
-	    } break;
-	    }
-
-	    break;
-	  }
-	}
+	SDL_GetMouseState(&ui.cursor.x, &ui.cursor.y);
+	ui.clicked = true;
       } break;
       case SDL_MOUSEMOTION: {
-	PlantType prev_plant_hovered = game.cur_plant_hovered;
-	game.cur_plant_hovered = (PlantType) -1;
-
-	SDL_GetMouseState(&game.cursor_x, &game.cursor_y);
-	for (auto &inter : rstate.interactions) {
-	  if (inter.check(game.cursor_x, game.cursor_y)) { 
-	    switch (inter.type) {
-	    case InteractionType::Plant: {
-	      game.cur_plant_hovered = inter.plant_type;
-	      game.plants[inter.plant_type]->anim_state.make_expand(1.08, 1.5);
-	    } break;
-	    }
-	    break;
-	  }
-	}
-
-	if (prev_plant_hovered != (PlantType) -1 && prev_plant_hovered != game.cur_plant_hovered) {
-	  game.plants[prev_plant_hovered]->anim_state.make_shrink(1.5);
-	}
+	SDL_GetMouseState(&ui.cursor.x, &ui.cursor.y);
       } break;
       default:
 	break;
@@ -117,11 +89,11 @@ int main()
 
     for (auto &plant : game.plants) {
       plant->anim_state.step();
-      plant->render(game.cur_plant_hovered == plant->type);  
+      plant->render(ui, &game);
     }
 
     game.render_fields();
-    
+
     SDL_Rect rect = {10, 10, config.text_size_px * 2, config.text_size_px * 2};
     SDL_RenderCopy(rstate.renderer, rstate.paw_img->texture, nullptr, &rect);
 

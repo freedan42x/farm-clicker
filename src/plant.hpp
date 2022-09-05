@@ -6,6 +6,7 @@
 #include "anim_state.hpp"
 #include "render_state.hpp"
 #include "text_field.hpp"
+#include "ui.hpp"
 
 struct Game;
 
@@ -31,7 +32,7 @@ struct Plant
 
   void update_fields(PlantType last_plant_unlocked);
   void on_click(Game *game);
-  void render(bool hovered);
+  void render(Ui &ui, Game *game);
 
   void write(Writer<StringBuffer> &w);
   void read(Value &d);

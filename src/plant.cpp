@@ -1,7 +1,6 @@
 #include <cassert>
 #include "game.hpp"
 #include "config.hpp"
-#include "interact.hpp"
 #include "util.hpp"
 #include "plant_desc.hpp"
 
@@ -25,15 +24,6 @@ Plant::Plant(RenderState *rstate, PlantType type) : rstate(rstate),
     (type % rstate->config->plants_per_screen / rstate->config->rows);
   w = rstate->config->plant_size;
   h = rstate->config->plant_size;
-  
-  Interaction interaction;
-  interaction.type = InteractionType::Plant;
-  interaction.x = x;
-  interaction.y = y;
-  interaction.w = rstate->config->plant_size;
-  interaction.h = rstate->config->plant_size;
-  interaction.plant_type = type;
-  rstate->interactions.push_back(interaction);
 }
 
 void Plant::update_fields(PlantType last_plant_unlocked)
@@ -61,6 +51,7 @@ void Plant::on_click(Game *game)
 {
   assert(game);
 
+  anim_state.shrink();
   double *money = &game->money[currency_type];
 
   if (type == PLANT_CARROT) {
@@ -96,21 +87,26 @@ void Plant::on_click(Game *game)
   }
 }
 
-void Plant::render(bool hovered)
+void Plant::render(Ui &ui, Game *game)
 {
-  int anim_x = x;
-  int anim_y = y;
-  int anim_w = w;
-  int anim_h = h;
-  anim_state.apply(&anim_x, &anim_y, &anim_w, &anim_h);
-  rstate->plant_imgs[type]->render(anim_x, anim_y, anim_w, anim_h);
-
   if (type != PLANT_CARROT) {
     price_field.render(x + (w - price_field.lines[0].width) / 2, y + h + 5);
   }
-
-  if (hovered) {
+  
+  Rect anim = {x, y, w, h};
+  anim_state.apply(&anim);
+  if (ui.button_hover(rstate->plant_imgs[type], anim)) {
     desc_field.render(0, rstate->config->height - 100, rstate->config->width);
+    anim_state.make_expand(1.08, 1.5);
+
+    if (ui.clicked) {
+      on_click(game);
+      game->calculate_rewards();
+      game->update_fields();
+      game->update_plant_fields();
+    }
+  } else {
+    anim_state.make_shrink(1.5);
   }
 }
 

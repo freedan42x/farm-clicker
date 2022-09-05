@@ -2,8 +2,6 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_FontCache.h>
-#include <vector>
-#include "interact.hpp"
 #include "image.hpp"
 #include "config.hpp"
 #include "plant_info.hpp"
@@ -27,8 +25,6 @@ struct RenderState
   Image *bear_img;
   Image *fox_img;
   Image *paw_img;
-  
-  std::vector<Interaction> interactions;
 
   RenderState(Config *config);
   ~RenderState();

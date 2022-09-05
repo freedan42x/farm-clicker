@@ -15,6 +15,11 @@ void AnimState::apply(int *x, int *y, int *w, int *h)
   *h += 2 * offset;
 }
 
+void AnimState::apply(Rect *r)
+{
+  apply(&r->x, &r->y, &r->w, &r->h);
+}
+
 void AnimState::step()
 {
   switch (type) {

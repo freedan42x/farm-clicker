@@ -8,8 +8,6 @@ struct Game
 {
   Config *config;
 
-  int cursor_x, cursor_y;
-
   double money[CURRENCY_COUNT];
   double income[CURRENCY_COUNT]; // per second
   CurrencyType last_currency_unlocked;
@@ -20,7 +18,6 @@ struct Game
   TextField money_field;
 
   Plant *plants[PLANT_COUNT];
-  PlantType cur_plant_hovered; // -1 if none
   PlantType last_plant_unlocked;
 
   Game(RenderState *rstate);

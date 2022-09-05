@@ -7,8 +7,6 @@ Game::Game(RenderState *rstate) : money_field(TextField(rstate))
 {
   config = rstate->config;
 
-  SDL_GetMouseState(&cursor_x, &cursor_y);
-
   for (auto i = 0; i < CURRENCY_COUNT; i++) {
     money[i] = 0.0;
   }
@@ -18,7 +16,6 @@ Game::Game(RenderState *rstate) : money_field(TextField(rstate))
     plants[i] = new Plant(rstate, (PlantType) i);
   }
   last_plant_unlocked = PLANT_CARROT;
-  cur_plant_hovered = (PlantType) -1;
 }
 
 void Game::update_fields()
