@@ -39,8 +39,8 @@ int main()
     rstate.plant_imgs[i]->load(game.plants[i]->level > 0 ? plant_paths[i] : plant_white_paths[i]);
   }
   
-  // printf("Time away: %lu\n", game.awaytime);
-  // printf("Playtime: %lu\n", game.playtime);
+  printf("Time away: %lu\n", game.awaytime);
+  printf("Playtime: %lu\n", game.playtime);
 
   Ui ui;
   

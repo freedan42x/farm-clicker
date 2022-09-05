@@ -12,14 +12,15 @@ struct Game
   double income[CURRENCY_COUNT]; // per second
   CurrencyType last_currency_unlocked;
 
-  // uint64_t playtime;
-  // uint64_t awaytime;
-
   TextField money_field;
 
   Plant *plants[PLANT_COUNT];
   PlantType last_plant_unlocked;
 
+  uint64_t playtime;
+  uint64_t time_since_start;
+  uint64_t awaytime;
+  
   Game(RenderState *rstate);
   void update_fields();
   void update_plant_fields();

@@ -16,6 +16,10 @@ Game::Game(RenderState *rstate) : money_field(TextField(rstate))
     plants[i] = new Plant(rstate, (PlantType) i);
   }
   last_plant_unlocked = PLANT_CARROT;
+
+  playtime = 0;
+  time_since_start = time(nullptr);
+  awaytime = 0;
 }
 
 void Game::update_fields()
@@ -88,20 +92,19 @@ void Game::write(Writer<StringBuffer> &w)
   w.Key("last_plant_unlocked");
   w.Int(last_plant_unlocked);
 
-  // uint64_t cur_time = time(nullptr);
-  // if (time_since_start > cur_time) {
-  //   printf("Cur time: %lu | Time since start: %lu\n", cur_time, time_since_start);
-  //   printf("Are you... from the past?! It's so coooool~ sunuvabitch!\n");
-  //   w.Key("playtime");
-  //   w.Uint64(playtime);
-  // } else {
-  //   uint64_t time_diff = cur_time - time_since_start;
-  //   w.Key("playtime");
-  //   w.Uint64(playtime + time_diff);
-  // }
+  uint64_t cur_time = time(nullptr);
 
-  // w.Key("last_time_played");
-  // w.Uint64(cur_time);
+  if (time_since_start > cur_time) {
+    printf("Are you... from the past?! It's so coooool~ sunuvabitch!\n");
+    w.Key("playtime");
+    w.Int(playtime - (time_since_start - cur_time));
+  } else {
+    w.Key("playtime");
+    w.Uint64(playtime + (cur_time - time_since_start));
+  }
+
+  w.Key("last_time_played");
+  w.Int(time(nullptr));
 }
 
 void Game::read(Value &d)
@@ -134,11 +137,18 @@ void Game::read(Value &d)
     last_plant_unlocked = (PlantType) d["last_plant_unlocked"].GetInt();
   }
 
-  // if (d.HasMember("playtime")) {
-  //   playtime = d["playtime"].GetUint64();
-  // }
+  if (d.HasMember("playtime")) {
+    playtime = d["playtime"].GetUint64();
+  }
 
-  // if (d.HasMember("last_time_played")) {
-  //   last_time_played = d["last_time_played"].GetUint64();
-  // }
+  if (d.HasMember("last_time_played")) {
+    uint64_t last_time_played = d["last_time_played"].GetUint64();
+    uint64_t cur_time = time(nullptr);
+
+    if (last_time_played > cur_time) {
+      printf("Are you... from the past?! It's so coooool~ sunuvabitch!\n");
+    } else {
+      awaytime = cur_time - last_time_played;
+    }
+  }
 }
