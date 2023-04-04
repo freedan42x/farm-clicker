@@ -12,7 +12,7 @@
 
 int main()
 {
-  std::string save_path = "saves/save1.json";
+  std::string save_path = "save1.json";
   
   Document d;
   bool success = read_json(save_path, &d);

@@ -3,6 +3,7 @@
 ## Quick Start
 
 ```shell
-make -j32
-./main
+make -j4 && ./main
 ```
+
+![](preview.gif)
