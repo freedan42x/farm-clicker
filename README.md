@@ -6,4 +6,5 @@
 make -j4 && ./main
 ```
 
-![](preview.gif)
+Preview:
+![Preview](preview.gif)
